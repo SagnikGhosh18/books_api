@@ -13,3 +13,6 @@ logs
 # IDE settings
 .idea
 .vscode
+
+# Prisma
+prisma/migrations
