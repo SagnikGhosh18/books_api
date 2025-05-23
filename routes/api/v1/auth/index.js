@@ -1,6 +1,6 @@
 const express = require('express');
 const authRouter = express.Router();
-const authController = require('../../../../controllers/auth');
+const { authController } = require('../../../../controllers/index');
 const authMiddleware = require('../../../../middleware/auth');
 
 // POST /api/v1/auth/register - User registration
