@@ -1,28 +1,18 @@
 const express = require('express');
-const router = express.Router();
-
-// POST /api/v1/auth/login - User login
-router.post('/login', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Login endpoint'
-  });
-});
+const authRouter = express.Router();
+const authController = require('../../../../controllers/auth');
+const authMiddleware = require('../../../../middleware/auth');
 
 // POST /api/v1/auth/register - User registration
-router.post('/register', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Registration endpoint'
-  });
-});
+authRouter.post('/register', authController.register);
 
-// POST /api/v1/auth/refresh-token - Refresh token
-router.post('/refresh-token', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Refresh token endpoint'
-  });
-});
+// POST /api/v1/auth/login - User login
+authRouter.post('/login', authController.login);
 
-module.exports = router;
+authRouter.use(authMiddleware);
+
+// POST /api/v1/auth/logout - User logout
+authRouter.post('/logout', authController.logout);
+
+
+module.exports = authRouter;

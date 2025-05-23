@@ -1,8 +1,8 @@
 const express = require('express');
-const router = express.Router();
+const authorsRouter = express.Router();
 
 // GET /api/v1/authors - Get all authors
-router.get('/', (req, res) => {
+authorsRouter.get('/', (req, res) => {
   res.json({
     success: true,
     message: 'Get all authors'
@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 });
 
 // GET /api/v1/authors/:id - Get single author
-router.get('/:id', (req, res) => {
+authorsRouter.get('/:id', (req, res) => {
   res.json({
     success: true,
     message: `Get author with ID: ${req.params.id}`
@@ -18,7 +18,7 @@ router.get('/:id', (req, res) => {
 });
 
 // POST /api/v1/authors - Create author
-router.post('/', (req, res) => {
+authorsRouter.post('/', (req, res) => {
   res.json({
     success: true,
     message: 'Create new author'
@@ -26,7 +26,7 @@ router.post('/', (req, res) => {
 });
 
 // PUT /api/v1/authors/:id - Update author
-router.put('/:id', (req, res) => {
+authorsRouter.put('/:id', (req, res) => {
   res.json({
     success: true,
     message: `Update author with ID: ${req.params.id}`
@@ -34,11 +34,11 @@ router.put('/:id', (req, res) => {
 });
 
 // DELETE /api/v1/authors/:id - Delete author
-router.delete('/:id', (req, res) => {
+authorsRouter.delete('/:id', (req, res) => {
   res.json({
     success: true,
     message: `Delete author with ID: ${req.params.id}`
   });
 });
 
-module.exports = router;
+module.exports = authorsRouter;
