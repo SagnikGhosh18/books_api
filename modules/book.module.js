@@ -111,15 +111,12 @@ class BookModule {
     }
 
     async getBookDetailsWithReviews(id, page = 1, limit = 10) {
-        // Convert string ID to integer
         const bookId = parseInt(id);
 
-        // Validate ID
         if (!bookId || isNaN(bookId)) {
             throw new Error('Invalid book ID');
         }
 
-        // Get book details with reviews
         const [book, reviews, reviewCount] = await Promise.all([
             prisma.book.findUnique({
                 where: { id: bookId },
@@ -175,7 +172,6 @@ class BookModule {
 
     async createReview(bookId, userId, body) {
         const { rating, comment } = body;
-        // Check if user has already reviewed this book
         const existingReview = await prisma.review.findFirst({
             where: {
                 bookId: parseInt(bookId),
@@ -187,12 +183,9 @@ class BookModule {
             throw new Error('User has already reviewed this book');
         }
 
-        // Validate rating (1-5)
         if (rating < 1 || rating > 5) {
             throw new Error('Rating must be between 1 and 5');
         }
-
-        // Create review
         const review = await prisma.review.create({
             data: {
                 rating,

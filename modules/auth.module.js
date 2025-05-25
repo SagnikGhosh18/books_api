@@ -5,7 +5,6 @@ const bcrypt = require('bcryptjs');
 
 const authModule = {
     async register({ email, password, name }) {
-        // Check if user already exists
         const existingUser = await prisma.user.findUnique({
             where: { email }
         });
@@ -14,10 +13,8 @@ const authModule = {
             throw new Error('Email already registered');
         }
 
-        // Hash password
         const hashedPassword = await bcrypt.hash(password, 8);
 
-        // Create user
         const user = await prisma.user.create({
             data: {
                 email,
@@ -26,7 +23,6 @@ const authModule = {
             }
         });
 
-        // Generate token
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
             expiresIn: '7d'
         });
@@ -42,7 +38,6 @@ const authModule = {
     },
 
     async login({ email, password }) {
-        // Find user
         const user = await prisma.user.findUnique({
             where: { email }
         });
@@ -51,14 +46,12 @@ const authModule = {
             throw new Error('Invalid credentials');
         }
 
-        // Verify password
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
             throw new Error('Invalid credentials');
         }
 
-        // Generate token
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
             expiresIn: '7d'
         });
@@ -74,7 +67,6 @@ const authModule = {
     },
 
     async logout(token) {
-        // Invalidate token by returning false
         return false;
     },
 
@@ -85,7 +77,6 @@ const authModule = {
         } catch (error) {
             return false;
         }
-        return user;
     }
 };
 

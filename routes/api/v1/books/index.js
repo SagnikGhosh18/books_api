@@ -30,14 +30,6 @@ router.delete('/:id', (req, res) => {
   bookController.deleteBookById(req, res);
 });
 
-// GET /api/v1/books/:id/reviews - Get book reviews
-router.get('/:id/reviews', (req, res) => {
-  res.json({
-    success: true,
-    message: `Get reviews for book with ID: ${req.params.id}`
-  });
-});
-
 // POST /api/v1/books/:id/reviews - Add book review
 router.post('/:id/reviews', (req, res) => {
   bookController.createReview(req, res);

@@ -12,12 +12,7 @@ router.use('/reviews', reviewRoutes);
 router.get('/', (req, res) => {
   res.json({
     success: true,
-    message: 'Welcome to API v1',
-    endpoints: {
-      auth: '/auth',
-      books: '/books',
-      reviews: '/reviews',
-    }
+    message: 'Welcome to API v1'
   });
 });
 
