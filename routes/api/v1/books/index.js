@@ -30,22 +30,6 @@ router.delete('/:id', (req, res) => {
   bookController.deleteBookById(req, res);
 });
 
-// GET /api/v1/books/search - Search books
-router.get('/search', (req, res) => {
-  const { title, author, genre, minYear, maxYear } = req.query;
-  res.json({
-    success: true,
-    message: 'Search books',
-    filters: {
-      title,
-      author,
-      genre,
-      minYear,
-      maxYear
-    }
-  });
-});
-
 // GET /api/v1/books/:id/reviews - Get book reviews
 router.get('/:id/reviews', (req, res) => {
   res.json({

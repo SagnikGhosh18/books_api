@@ -9,8 +9,6 @@ class ReviewModule {
             }
         });
 
-        console.log(review);
-
         if (reviewData.userId !== parseInt(userId)) {
             throw new Error('You are not authorized to update this review');
         }

@@ -158,11 +158,37 @@ const createReview = async (req, res) => {
     }
 };
 
+const searchBooks = async (req, res) => {
+    try {
+        const { query, page = 1, limit = 10 } = req.query;
+
+        if (!query) {
+            return res.status(400).json({
+                success: false,
+                message: 'No query provided'
+            });
+        }
+
+        const books = await bookModule.searchBooks(query, parseInt(page), parseInt(limit));
+
+        res.status(201).json({
+            success: true,
+            result: books
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     getAllBooks,
     createBook,
     getBookById,
     updateBookById,
     deleteBookById,
-    createReview
+    createReview,
+    searchBooks
 };

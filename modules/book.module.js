@@ -51,10 +51,74 @@ class BookModule {
         return book;
     }
 
+    async searchBooks(query, page = 1, limit = 10) {
+        const searchQuery = query.toLowerCase();
+
+        const [books, total] = await Promise.all([
+            prisma.book.findMany({
+                where: {
+                    OR: [
+                        {
+                            title: {
+                                contains: searchQuery
+                            }
+                        },
+                        {
+                            author: {
+                                contains: searchQuery
+                            }
+                        }
+                    ]
+                },
+                skip: (page - 1) * limit,
+                take: limit,
+                orderBy: {
+                    title: 'asc'
+                }
+            }),
+            prisma.book.count({
+                where: {
+                    OR: [
+                        {
+                            title: {
+                                contains: searchQuery
+                            }
+                        },
+                        {
+                            author: {
+                                contains: searchQuery
+                            }
+                        }
+                    ]
+                }
+            })
+        ]);
+
+        const totalPages = Math.ceil(total / limit);
+        const currentPage = page;
+        const hasMore = currentPage < totalPages;
+
+        return {
+            books,
+            pagination: {
+                currentPage,
+                totalPages,
+                hasMore,
+                limit,
+                total
+            }
+        };
+    }
+
     async getBookDetailsWithReviews(id, page = 1, limit = 10) {
         // Convert string ID to integer
         const bookId = parseInt(id);
-        
+
+        // Validate ID
+        if (!bookId || isNaN(bookId)) {
+            throw new Error('Invalid book ID');
+        }
+
         // Get book details with reviews
         const [book, reviews, reviewCount] = await Promise.all([
             prisma.book.findUnique({
@@ -80,6 +144,10 @@ class BookModule {
                 where: { bookId }
             })
         ]);
+
+        if (!book) {
+            throw new Error('Book not found');
+        }
 
         if (!book) {
             throw new Error('Book not found');
