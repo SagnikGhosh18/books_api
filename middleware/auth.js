@@ -16,10 +16,7 @@ const auth = async (req, res, next) => {
     // Check if token is blacklisted
     const blacklistedToken = await prisma.blacklistedToken.findFirst({
       where: {
-        token,
-        expiresAt: {
-          gt: new Date()
-        }
+        token
       }
     });
 
@@ -36,7 +33,7 @@ const auth = async (req, res, next) => {
     });
 
     if (!user) {
-      throw new Error();
+      throw new Error('User not found');
     }
 
     req.user = user;
@@ -45,7 +42,7 @@ const auth = async (req, res, next) => {
   } catch (error) {
     res.status(401).json({
       success: false,
-      message: 'Please authenticate'
+      message: error.message || 'Please authenticate'
     });
   }
 };

@@ -1,5 +1,7 @@
-const authController = require('./auth.controller');
+const authController = require('./auth.servlet');
+const bookController = require("./book.servlet");
 
 module.exports = {
-    authController
+    authController,
+    bookController
 }

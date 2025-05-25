@@ -77,8 +77,7 @@ const authModule = {
         // Create blacklisted token
         await prisma.blacklistedToken.create({
             data: {
-                token,
-                expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
+                token
             }
         });
 
@@ -89,10 +88,7 @@ const authModule = {
         // Check if token is blacklisted
         const blacklistedToken = await prisma.blacklistedToken.findFirst({
             where: {
-                token,
-                expiresAt: {
-                    gt: new Date()
-                }
+                token
             }
         });
 

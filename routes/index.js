@@ -8,7 +8,6 @@ router.get('/', (req, res) => {
   res.json({
     success: true,
     message: 'Welcome to the Books API',
-    documentation: 'https://github.com/yourusername/books-api'
   });
 });
 
