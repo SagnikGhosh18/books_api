@@ -55,18 +55,12 @@ const createBook = async (req, res) => {
 };
 
 const getBookById = async (req, res) => {
+    const { id } = req.params;
+    const { page = 1, limit = 10 } = req.query;
+
     try {
-        const { id } = req.params;
-
-        if (!id) {
-            return res.status(400).json({
-                success: false,
-                message: 'No id provided'
-            });
-        }
-
-        const book = await bookModule.getBookById(id);
-
+        const bookDetails = await bookModule.getBookDetailsWithReviews(id, parseInt(page), parseInt(limit));
+        res.status(200).json(bookDetails);
         res.status(201).json({
             success: true,
             result: book
@@ -130,10 +124,45 @@ const deleteBookById = async (req, res) => {
     }
 };
 
+const createReview = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.headers['user-id'];
+        const { body = {} } = req;
+
+        if (!id) {
+            return res.status(400).json({
+                success: false,
+                message: 'No id provided'
+            });
+        }
+
+        if (!userId) {
+            return res.status(400).json({
+                success: false,
+                message: 'No user id provided'
+            });
+        }
+
+        const review = await bookModule.createReview(id, userId, body);
+
+        res.status(201).json({
+            success: true,
+            result: review
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     getAllBooks,
     createBook,
     getBookById,
     updateBookById,
-    deleteBookById
+    deleteBookById,
+    createReview
 };

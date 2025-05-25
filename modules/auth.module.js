@@ -74,38 +74,17 @@ const authModule = {
     },
 
     async logout(token) {
-        // Create blacklisted token
-        await prisma.blacklistedToken.create({
-            data: {
-                token
-            }
-        });
-
-        return true;
+        // Invalidate token by returning false
+        return false;
     },
 
     async validateToken(token) {
-        // Check if token is blacklisted
-        const blacklistedToken = await prisma.blacklistedToken.findFirst({
-            where: {
-                token
-            }
-        });
-
-        if (blacklistedToken) {
-            throw new Error('Token has been revoked');
+        try {
+            jwt.verify(token, process.env.JWT_SECRET);
+            return true;
+        } catch (error) {
+            return false;
         }
-
-        // Verify JWT
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await prisma.user.findUnique({
-            where: { id: decoded.id }
-        });
-
-        if (!user) {
-            throw new Error('User not found');
-        }
-
         return user;
     }
 };

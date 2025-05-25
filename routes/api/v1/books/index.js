@@ -56,10 +56,7 @@ router.get('/:id/reviews', (req, res) => {
 
 // POST /api/v1/books/:id/reviews - Add book review
 router.post('/:id/reviews', (req, res) => {
-  res.json({
-    success: true,
-    message: `Add review for book with ID: ${req.params.id}`
-  });
+  bookController.createReview(req, res);
 });
 
 module.exports = router;

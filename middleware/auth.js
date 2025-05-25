@@ -13,20 +13,6 @@ const auth = async (req, res, next) => {
       });
     }
 
-    // Check if token is blacklisted
-    const blacklistedToken = await prisma.blacklistedToken.findFirst({
-      where: {
-        token
-      }
-    });
-
-    if (blacklistedToken) {
-      return res.status(401).json({
-        success: false,
-        message: 'Token has been revoked'
-      });
-    }
-
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await prisma.user.findUnique({
       where: { id: decoded.id }
